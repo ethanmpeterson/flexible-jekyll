@@ -87,19 +87,27 @@ The level translator and neopixel schematic is located in `Neopixel.SchDoc`
 [here](https://github.com/qfsae/pcb/tree/master/Steering).
 
 ## LCD Control
-- SPI interface for the FTDI display
+The microcontroller communicates with the LCD via SPI. Rather than sending a
+full framebuffer, individual SPI commands are sent to an FT813 display
+controller. As a result, the PCB only needs to provide a SPI interface to the
+LCD. The schematics are located in `MCU.SchDoc` and `Connectors.SchDoc`.
 
 ## Debug Interface
-- USART and JTAG breakout for use with the custom debugger (link to post)
+The SPCB implements both JTAG and USART debug interfaces to be used in
+conjunction with the custom [Queen's Formula Debugger](../debugger). In future
+revisions, this debug interface can be integrated directly into the PCB.
+However, this was not done on the first revision due to the chip shortage and
+difficulty acquiring STM32 chips specifically.
 
 ## CAN Bus Design
+
 - Switchable termination, microcontroller controlled IO
 
 ## Project Viewer
 Embedded below is the Altium project view of the SPCB project. The embedded viewer
 contains all the schematics that constitute the multi-sheet design as well as
 the PCB layout, BOM and 3D renders. The complete Altium CAD files can be found 
-[here](https://365.altium.com/files/6934B02C-5ED8-45D2-84E8-5A2D8FEC4D79).
+[here](https://github.com/qfsae/pcb/tree/master/Steering).
 
 <iframe src="https://personal-viewer.365.altium.com/client/index.html?feature=embed&source=6934B02C-5ED8-45D2-84E8-5A2D8FEC4D79&activeView=PCB" width="1280" height="720" style="overflow:hidden;border:none;width:100%;height:720px;" scrolling="no" allowfullscreen="true" onload="window.top.scrollTo(0,0);"></iframe>
 
