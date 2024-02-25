@@ -165,11 +165,11 @@ time. This includes but is not limited to:
 - Brake Position
 - CAN Bus Health
 
-Typically, the driver is only concerned with the gear, RPM and speed. This data
-was included on a dedicated drive mode screen with the remaining data accessible
-on a debug screen through a button. One of the debug screens is shown in the
-thumbnail for this post. The display allowed the team to quickly spot-check
-vehicle health without connecting a laptop to the car.
+Typically, the driver is only concerned with the gear, RPM, and vehicle speed.
+This data was included on a dedicated drive mode screen with the remaining data
+accessible on a debug screen through a button. One of the debug screens is shown
+in the thumbnail for this post. The display allowed the team to quickly
+spot-check vehicle health without connecting a laptop to the car.
 
 Decoding the ECU data in real time was handled by [Jacob
 Chisholm's](https://github.com/Jchisholm204) CAN Bus Abstraction Layer (CAL)
@@ -178,6 +178,15 @@ decode the messages from our MoTec ECU and PDM. In the steering firmware, the
 CAN message's ID and payload would be passed into a library function call to
 collect the relevant data making it easily accessible for other team members
 working on the driver interface.
+
+# Harnessing and Vehicle Interface
+- Cover the electrical interface to the rest of the car harness and quick release
+- Decision to regulate on the board to optimize power through quick release
+- CAN bus is the only means of collecting data, limited space for switch
+  hardlines and good grounding.
+- Move from CAN to hard line shifting IO inputs.
+
+- Link to the full QFSAE harness design and page where we have the steering interface
 
 # Photo and Video Gallery
 Below is a collection of photos and videos from the 2023 formula season which include the SPCB.
