@@ -180,13 +180,22 @@ collect the relevant data making it easily accessible for other team members
 working on the driver interface.
 
 # Harnessing and Vehicle Interface
-- Cover the electrical interface to the rest of the car harness and quick release
-- Decision to regulate on the board to optimize power through quick release
-- CAN bus is the only means of collecting data, limited space for switch
-  hardlines and good grounding.
-- Move from CAN to hard line shifting IO inputs.
+Since the SPCB is embedded in the steering wheel of the vehicle rather than in
+the dashboard, it needs to be able to interface with the vehicle through a quick-release connector.
 
-- Link to the full QFSAE harness design and page where we have the steering interface
+The team used a quick-release connector with an 8-pin interface. 12V power is
+fed to the quick-release and regulated locally on the SPCB to help with current
+capacity constraints. CAN bus is also routed through the quick-release. The 4
+remaining signal lines were used as hard lines for the shifter paddles and other
+buttons to the ECU. The SPCB has the ability to transmit switch statuses
+over CAN, but the extra 4 signals served as a backup.
+
+Similarly to the SPCB itself, the vehicle harness design was also captured in
+Altium. Special thanks to [Joe Wigle](https://www.linkedin.com/in/joe-wigle/)
+for his support in the construction of the vehicle harness and the schematic
+design. The schematic for the harness is given below:
+
+<div class="altium-ecad-viewer" data-project-token="Rm7wy9AR1kK43EXYUvGiMmi0" data-enabled-views="sch,bom" data-active-view="sch" style="border-radius: 0px 0px 4px 4px; height: 500px; border-style: solid; border-width: 1px; border-color: rgb(241, 241, 241); overflow: hidden; max-width: 1280px; max-height: 700px; box-sizing: border-box;"></div><script src="https://viewer.altium.com/client/static/js/embed.js"></script>
 
 # Photo and Video Gallery
 Below is a collection of photos and videos from the 2023 formula season which include the SPCB.
