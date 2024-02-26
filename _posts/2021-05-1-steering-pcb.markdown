@@ -25,7 +25,7 @@ been Arduino based. The goal of SPCB is to upgrade the microcontroller to STM32
 and provide a truly re-usable design that allows the team to continue to build
 out more sophisticated firmware in the coming seasons.
 
-STM32 provides two advantages; speed and native CAN buses. Unlike the Arduino's
+STM32 provides two advantages; speed and native CAN buses. Unlike the Arduinos
 based on ATMEGA328P that have been used in the past, the STM32F4 used in the
 SPCB has two native CAN controllers. The native CAN controllers open a variety
 of possibilities for multiple CAN buses in the vehicle, gatewaying, interrupt
