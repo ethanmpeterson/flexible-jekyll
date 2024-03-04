@@ -1,0 +1,49 @@
+---
+layout: post
+title: "TeachEE: The FPGA-Based USB Oscilloscope"
+date: 2022-12-01 14:30:20 +0300
+description: A final capstone project for Queen's Computer Engineering.
+img: teachee/thumb.jpg # Add image post (optional)
+fig-caption: Fully Assembled TeachEE PCBA
+tags: [SystemVerilog, FPGA, Altium Designer, Rust, Python, AXI Stream, Xilinx Vivado, Oscilloscopes, Signal Processing]
+---
+<script src="https://viewer.altium.com/client/static/js/embed.js"></script>
+
+# Introduction
+- Is a capstone project serving as a culmination of four years in Computer Engineering
+- Goals:
+  - Try to showcase the "full stack" of skills that a Computer Engineer might have
+  - Electrical and PCB design.
+  - Digital Design in the form of the FPGA.
+  - Knowledge of signals and systems and DSP.
+  - Networking and communications protocols
+  - Systems level programming (the main oscilloscope applications)
+  - Ensure each member of the group had something to learn.
+
+# Hardware Design
+- Focus on test points and debuggability in board size and layout.
+- Board architecture diagram
+- Altium embed
+
+- 40MSPS ADC de-risking with stuff options to bypass front-end amplifiers and voltage clamps.
+- Choice to use dedicated FPGA DIP module in lieu of chip shortage
+- Main issue was incorrectly routed clock pin.
+
+- Reference section in report PDF for full HW deep dive
+
+# FPGA Firmware Design
+- FTDI driver
+- Use of AXI streams
+- Refer to overall capstone report
+- Add figure of the FPGA block diagram
+
+# Software Design
+- Credit Eric Yang here.
+- Refer to the report. Provide the top level flow diagram as a figure
+
+# Gallery and Awards
+- Group photo with the project
+- Winning both IEEE and the ECE competition.
+
+# Conclusion
+- Great way to end time in Computer Engineering and get exposure to FPGAs which I had not experience outside of basic coursework
