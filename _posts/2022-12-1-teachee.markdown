@@ -19,32 +19,32 @@ purpose of the project was to showcase the "full stack" of skills learned in
 Computer Engineering.
 
 The project gave me the opportunity the build a complete product from the
-hardware to the software. The software also allowed me to touch on many of the
-subjects I had learned about in my degree and internships:
+hardware to the software. TeachEE allowed me to make use of the
+skills I had learned about in my degree and internships:
 - Electrical and PCB Design
 - Digital Design and Hardware Description Languages (HDLs)
 - Knowledge of Signals and Systems, and Digital Signal Processing (DSP)
 - Networking and basic communication protocols
 - Systems Level Programming
 
-The broad scope of the project required expertise in multiple disciplines in
+The broad scope of the project required expertise in multiple disciplines within
 Electrical and Computer Engineering. The benefit of the large scope was that
 each group member (Eric Yang, Ethan Peterson, Timothy Morland, John Giorshev)
 could all find an area of the project with technical work that interested them.
 
-Ultimately, I took on the hardware design and FPGA firmware as this best aligned
-with my career background and interests. Eric developed the desktop application
-for TeachEE, which would display the waveforms sampled by the hardware. The
-desktop program also allowed for triggering functionality, Fast Fourier
-Transforms (FFTs), and other basic functions expected of an oscilloscope.
+I took on the hardware design and FPGA firmware as this best aligned with my
+career background and interests. Eric developed the desktop application for
+TeachEE, which would display the waveforms sampled by the hardware. The desktop
+program also allowed for triggering functionality, Fast Fourier Transforms
+(FFTs), and other basic functions expected of an oscilloscope.
 
 Tim and John took ownership of the signal generator used for TeachEE demos in
-presentations and competition. The signal generator utilized the Digital to
+presentations and competitions. The signal generator utilized the Digital to
 Analog Converter (DAC) of an Arduino Due to generate arbitrary waveforms to
 showcase the features of TeachEE. The signal generator used a joystick input to
-modulate frequency amplitude and phase of a signal.
+modulate frequency, amplitude, and phase of a signal.
 
-- The overall TeachEE Github repository can be found [here](https://github.com/teachee-capstone/teachee).
+- The overall TeachEE GitHub repository can be found [here](https://github.com/teachee-capstone/teachee).
   - [Hardware Design Files](https://github.com/teachee-capstone/teachee/tree/main/hardware)
   - [SystemVerilog Source Code](https://github.com/teachee-capstone/teachee/tree/main/rtl)
   - [Rust Desktop Application Source Code](https://github.com/teachee-capstone/teachee/tree/main/software/teachee-desktop)
@@ -74,7 +74,7 @@ linked in the introduction section.
 
 Given below is a system block diagram for the TeachEE PCB.
 
-![hw-diagram](../assets/img/teachee/hw-block-diagram.png)
+![hw-block-diagram](../assets/img/teachee/hw-block-diagram.png)
 
 At a high level, the FPGA is responsible for consuming voltage and current
 samples from three voltage channels and one current monitoring channel.
@@ -92,15 +92,15 @@ but are "free" to add since the FPGA had a built-in ADC of its own.
 Each voltage channel has a Low Pass Filter (LPF) on its input to clamp signals
 to an acceptable frequency based on the [Nyquist
 Theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem).
-Additionally, the two high speed voltage channels connected to the AD9288 40
+Additionally, the two high-speed voltage channels connected to the AD9288 40
 MSPS ADC have a differential amplifier on the input, which is used to convert
-the single-ended signal to a differential signal the ADC can sample. The FPGA is
-responsible for generating the sampling clock to the high-speed ADC. 40 MSPS is
-the maximum rate, but any speed can be chosen.
+the single-ended signal to a differential signal that the ADC can sample. The
+FPGA is responsible for generating the sampling clock to the high-speed ADC. 40
+MSPS is the maximum rate, but any speed can be chosen.
 
 ### Power Distribution
-The board is fully powered by USB which imposes a 5V 1A (5W) power limit on the
-PCB. In practice, the PCBA rarely drew current in excess of 100mA. An LDO is
+The board is fully powered by USB which imposes a 5Vx1A (5W) power limit on the
+PCB. In practice, the PCBA rarely draws current in excess of 100mA. An LDO is
 used to produce a 3.3V internal power domain.
 
 ### USB Communication
@@ -146,6 +146,13 @@ spaced out from another making them easily accessible by oscilloscope probes.
 Additionally, the board has several dedicated ground tabs that can be used to
 minimize ground loop size when debugging higher speed signals on the board.
 
+Luckily, these debugging features were not needed as board bring-up went
+smoothly. The only error in the hardware was wiring the FT232H output clock to a
+non-clock-capable pin on the FPGA. This issue was mitigated in firmware by
+minimizing the size of the 60 MHz FT232H clock domain as much as possible in the
+FPGA logic fabric. Eventually, the logic was optimized to a point where the
+synthesized design could still meet timing constraints.
+
 # FPGA Firmware Design
 The FPGA on TeachEE is responsible for taking samples from the voltage and
 current channels across multiple clock domains and queuing them for transfer to
@@ -154,18 +161,18 @@ USB packets that can be easily and quickly decoded by the desktop application in
 order to support the high 40 MSPS sample rate.
 
 Given below is the block diagram describing the FPGA datapath. A full
-module-by-module breakdown is provided in section 3.2 of the full report
+module-by-module breakdown is provided in section 3.2 of the report
 embedded at the top of the post.
 
 ![fpga-block-diagram](../assets/img/teachee/fpga-block-diagram.png)
 
 The FPGA has dedicated modules to collect samples from the low and high speed
-ADCs respectively. Each module outputs the data on an AXI streams. AXI streams
+ADCs respectively. Each module outputs the data on an AXI stream. AXI streams
 are used as a standard interface between modules in the FPGA to make use of
 various FIFO IPs for queuing samples. These asynchronous FIFOs are used to carry
-samples across the various clock domains until they can be encoded and sent over
-USB. The FTDI module takes an AXI stream as input and converts it to the
-parallel interface of the FT232H.
+samples across the various clock domains in the datapath until they can be
+encoded and sent over USB. The FTDI module takes an AXI stream as input and
+converts it to the parallel interface of the FT232H.
 
 Samples are encoded using [Consistent Overhead Byte Stuffing
 (COBS)](https://en.wikipedia.org/wiki/Consistent_Overhead_Byte_Stuffing).
@@ -190,9 +197,9 @@ the report.
 
 # Gallery and Awards
 At the end of 2022-2023 school year, TeachEE entered the Queen's ECE Capstone
-Competition and won both the department and IEE awards. TeachEE won first place
-for both the ECE department and the Kingston IEEE chapter. Below is a gallery of
-photos from the capstone showcase.
+Competition and won both the department and IEEE awards. TeachEE won first place
+for both the ECE department and the Kingston Ontario IEEE chapter. Below is a
+gallery of photos from the capstone showcase.
 
 ![capstone1](../assets/img/teachee/capstone1.jpg)
 
@@ -211,4 +218,4 @@ Overall, TeachEE is a culmination of all my favorite subjects in Electrical and
 Computer Engineering. Moreover, it was a fantastic way to end my time at Queen's
 Computer Engineering. I was thrilled that the project was well-received by the
 department and that we were able to integrate both hardware and software into a
-single capstone.
+single capstone project.
