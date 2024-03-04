@@ -50,21 +50,101 @@ modulate frequency amplitude and phase of a signal.
   - [Rust Desktop Application Source Code](https://github.com/teachee-capstone/teachee/tree/main/software/teachee-desktop)
   - [Signal Generator Source Code](https://github.com/teachee-capstone/teachee/tree/main/software/signal_generator)
 
-Given below is a copy is the full-detail technical report provided to the
-university at the end of the project.
+Given below is a copy of the fully detailed technical report provided to the
+university at the end of the project. This post is a shortened summary of this
+report.
 
-TODO
+<object data="../assets/img/teachee/report.pdf" width="1000" height="1000" type='application/pdf'></object>
 
 # Hardware Design
-- Focus on test points and debuggability in board size and layout.
-- Board architecture diagram
-- Altium embed
+The first step in developing TeachEE was designing the hardware. Three boards
+were fabricated so multiple group members could do development work
+concurrently. The primary functional components are listed below.
 
-- 40MSPS ADC de-risking with stuff options to bypass front-end amplifiers and voltage clamps.
-- Choice to use dedicated FPGA DIP module in lieu of chip shortage
-- Main issue was incorrectly routed clock pin.
+- [FTDI232H](https://ftdichip.com/products/ft232hq/) in parallel mode for USB communication with the computer.
+- [AD9288](https://www.analog.com/en/products/ad8138.html) dual-channel 40MSPS 8-bit ADC.
+- [AD8138](https://www.analog.com/en/products/ad8138.html) Differential Amplifier. (Used for analog front-end signal clamping and conversion)
+- [ACS720](https://www.digikey.com/en/products/detail/allegro-microsystems/ACS720KLATR-15AB-T/7363746) Hall-effect Current Sensor
+- [CMOD A7 35T](https://www.digikey.com/en/products/detail/digilent-inc/410-328-35/6133793?s=N4IgTCBcDaICwEYAMBaAzGAHOgrCAugL5A) FPGA Breakout Board.
 
-- Reference section in report PDF for full HW deep dive
+For a full BOM and schematic review, please see section 2.1 of the full report
+linked in the introduction section.
+
+## System Design and Block Diagram
+
+Given below is a system block diagram for the TeachEE PCB.
+
+![hw-diagram](../assets/img/teachee/hw-block-diagram.png)
+
+At a high level, the FPGA is responsible for consuming voltage and current
+samples from three voltage channels and one current monitoring channel.
+Specifications for each channel are listed below.
+- 2x 40 MSPS 8-bit ADC voltage channels
+- 1 MSPS 16-bit ADC low-speed voltage channel
+- 1 MSPS 16-bit ADC current monitoring channel
+
+### Voltage and Current Channels
+The FPGA's internal ADC is used for one of the voltage channels and the current
+monitoring channel. These channels are limited to 1 MSPS while the external ADC
+can produce up to 40 MSPS. The slower 1MSPS channels were not initially planned
+but are "free" to add since the FPGA had a built-in ADC of its own.
+
+Each voltage channel has a Low Pass Filter (LPF) on its input to clamp signals
+to an acceptable frequency based on the [Nyquist
+Theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem).
+Additionally, the two high speed voltage channels connected to the AD9288 40
+MSPS ADC have a differential amplifier on the input, which is used to convert
+the single-ended signal to a differential signal the ADC can sample. The FPGA is
+responsible for generating the sampling clock to the high-speed ADC. 40 MSPS is
+the maximum rate, but any speed can be chosen.
+
+### Power Distribution
+The board is fully powered by USB which imposes a 5V 1A (5W) power limit on the
+PCB. In practice, the PCBA rarely drew current in excess of 100mA. An LDO is
+used to produce a 3.3V internal power domain.
+
+### USB Communication
+In order to leverage maximum USB transfer speeds, the full parallel interface of
+the FT232H USB FIFO is wired to the FPGA. In this configuration, the FT232H
+generates a 60 MHz clock used to align the 8-bit parallel bus. The FPGA's
+internal state machine aligns to this clock and allows the system to transfer a
+byte of data in each 60 MHz clock cycle. This is known as the "Synchronous Mode"
+for FT232H. The Synchronous mode allows the FT232H to utilize the full bandwidth
+available on a USB2.0 interface. For the purposes of TeachEE, the 480 Mbps
+bandwidth of USB2.0 was sufficient for transferring samples at the desired
+speeds.
+
+## Altium Project Viewer
+Given below is an embedded view of the TeachEE Altium Project.
+
+<iframe src="https://personal-viewer.365.altium.com/client/index.html?feature=embed&source=0E0F9283-7CE6-4F7A-A1F5-A4D0804C79EE&activeView=SCH" width="1280" height="720" style="overflow:hidden;border:none;width:100%;height:720px;" scrolling="no" allowfullscreen="true" onload="window.top.scrollTo(0,0);"></iframe>
+
+## Schematic Design
+The TeachEE hardware had to be designed and fabricated within the span of a
+single semester to leave time for software and FPGA firmware development. As a
+result, there was only time for a single manufacturing run of the PCB.
+
+Under these constraints, it was critical that the PCB be easy to debug in the
+case of hardware issues. To accommodate this, I did the following:
+- Test points on all digital signals connected to the FPGA.
+- BOM stuff options to bypass the LPFs on all voltage channels.
+- BOM stuff options to bypass the differential amplifiers on the high speed ADC circuit.
+- Empty pads to allow the high speed ADC to accept a single-ended input.
+- Use of an external FPGA module connected through a pin header. The decoupling
+  of the FPGA ensured it could be manually wired if there was a mistake in the
+  PCB pinout.
+
+## Layout Design
+TeachEE is a four layer PCB. The two external layers are used for signals and
+power, while the internal layers are ground planes. This stackup was used to
+achieve optimal signal integrity with high speed signals coming from the ADC and
+USB FIFO.
+
+The TeachEE is larger than necessary to make space for the debugging features
+listed in the schematic section. All test points and BOM stuff options are
+spaced out from another making them easily accessible by oscilloscope probes.
+Additionally, the board has several dedicated ground tabs that can be used to
+minimize ground loop size when debugging higher speed signals on the board.
 
 # FPGA Firmware Design
 - FTDI driver
