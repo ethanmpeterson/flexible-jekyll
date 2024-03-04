@@ -10,15 +10,50 @@ tags: [SystemVerilog, FPGA, Altium Designer, Rust, Python, AXI Stream, Xilinx Vi
 <script src="https://viewer.altium.com/client/static/js/embed.js"></script>
 
 # Introduction
-- Is a capstone project serving as a culmination of four years in Computer Engineering
-- Goals:
-  - Try to showcase the "full stack" of skills that a Computer Engineer might have
-  - Electrical and PCB design.
-  - Digital Design in the form of the FPGA.
-  - Knowledge of signals and systems and DSP.
-  - Networking and communications protocols
-  - Systems level programming (the main oscilloscope applications)
-  - Ensure each member of the group had something to learn.
+TeachEE (Teach Electrical Engineering) is a USB oscilloscope implemented with an
+FPGA, custom PCB, and accompanying desktop application. TeachEE was my capstone
+project and served as the culmination of my four years in Computer Engineering
+at Queen's. Despite the branding, there was no commercial intention behind TeachEE
+as similar cheap USB-based instruments already exist for students. Instead, the
+purpose of the project was to showcase the "full stack" of skills learned in
+Computer Engineering.
+
+The project gave me the opportunity the build a complete product from the
+hardware to the software. The software also allowed me to touch on many of the
+subjects I had learned about in my degree and internships:
+- Electrical and PCB Design
+- Digital Design and Hardware Description Languages (HDLs)
+- Knowledge of Signals and Systems, and Digital Signal Processing (DSP)
+- Networking and basic communication protocols
+- Systems Level Programming
+
+The broad scope of the project required expertise in multiple disciplines in
+Electrical and Computer Engineering. The benefit of the large scope was that
+each group member (Eric Yang, Ethan Peterson, Timothy Morland, John Giorshev)
+could all find an area of the project with technical work that interested them.
+
+Ultimately, I took on the hardware design and FPGA firmware as this best aligned
+with my career background and interests. Eric developed the desktop application
+for TeachEE, which would display the waveforms sampled by the hardware. The
+desktop program also allowed for triggering functionality, Fast Fourier
+Transforms (FFTs), and other basic functions expected of an oscilloscope.
+
+Tim and John took ownership of the signal generator used for TeachEE demos in
+presentations and competition. The signal generator utilized the Digital to
+Analog Converter (DAC) of an Arduino Due to generate arbitrary waveforms to
+showcase the features of TeachEE. The signal generator used a joystick input to
+modulate frequency amplitude and phase of a signal.
+
+- The overall TeachEE Github repository can be found [here](https://github.com/teachee-capstone/teachee).
+  - [Hardware Design Files](https://github.com/teachee-capstone/teachee/tree/main/hardware)
+  - [SystemVerilog Source Code](https://github.com/teachee-capstone/teachee/tree/main/rtl)
+  - [Rust Desktop Application Source Code](https://github.com/teachee-capstone/teachee/tree/main/software/teachee-desktop)
+  - [Signal Generator Source Code](https://github.com/teachee-capstone/teachee/tree/main/software/signal_generator)
+
+Given below is a copy is the full-detail technical report provided to the
+university at the end of the project.
+
+TODO
 
 # Hardware Design
 - Focus on test points and debuggability in board size and layout.
@@ -46,4 +81,5 @@ tags: [SystemVerilog, FPGA, Altium Designer, Rust, Python, AXI Stream, Xilinx Vi
 - Winning both IEEE and the ECE competition.
 
 # Conclusion
-- Great way to end time in Computer Engineering and get exposure to FPGAs which I had not experience outside of basic coursework
+- Great way to end time in Computer Engineering and get exposure to FPGAs which
+  I had not experience outside of basic coursework
