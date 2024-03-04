@@ -147,19 +147,68 @@ Additionally, the board has several dedicated ground tabs that can be used to
 minimize ground loop size when debugging higher speed signals on the board.
 
 # FPGA Firmware Design
-- FTDI driver
-- Use of AXI streams
-- Refer to overall capstone report
-- Add figure of the FPGA block diagram
+The FPGA on TeachEE is responsible for taking samples from the voltage and
+current channels across multiple clock domains and queuing them for transfer to
+the desktop application over USB. The FPGA also has to frame the samples into
+USB packets that can be easily and quickly decoded by the desktop application in
+order to support the high 40 MSPS sample rate.
+
+Given below is the block diagram describing the FPGA datapath. A full
+module-by-module breakdown is provided in section 3.2 of the full report
+embedded at the top of the post.
+
+![fpga-block-diagram](../assets/img/teachee/fpga-block-diagram.png)
+
+The FPGA has dedicated modules to collect samples from the low and high speed
+ADCs respectively. Each module outputs the data on an AXI streams. AXI streams
+are used as a standard interface between modules in the FPGA to make use of
+various FIFO IPs for queuing samples. These asynchronous FIFOs are used to carry
+samples across the various clock domains until they can be encoded and sent over
+USB. The FTDI module takes an AXI stream as input and converts it to the
+parallel interface of the FT232H.
+
+Samples are encoded using [Consistent Overhead Byte Stuffing
+(COBS)](https://en.wikipedia.org/wiki/Consistent_Overhead_Byte_Stuffing).
+However, the FPGA takes an extra step to guarantee a fixed frame size so that
+the desktop application can have a faster decoding algorithm.
 
 # Software Design
-- Credit Eric Yang here.
-- Refer to the report. Provide the top level flow diagram as a figure
+[Eric Yang](https://www.linkedin.com/in/eric-yang-9bb055193/) in our capstone
+group completed the desktop Rust application for TeachEE. This multi-threaded
+application consumed the multi-channel sample stream from the TeachEE PCB and
+implemented full oscilloscope functionality, including but not limited to:
+- Multi-channel display
+- Fast Fourier Transforms
+- Triggers
+- Time and amplitude scaling
+
+Given below is a sequence diagram for the desktop application.
+![sw-sequence-diagram.png](../assets/img/teachee/sw-sequence-diagram.png)
+
+Eric's full breakdown of the desktop application can be found in section 3.3 of
+the report.
 
 # Gallery and Awards
-- Group photo with the project
-- Winning both IEEE and the ECE competition.
+At the end of 2022-2023 school year, TeachEE entered the Queen's ECE Capstone
+Competition and won both the department and IEE awards. TeachEE won first place
+for both the ECE department and the Kingston IEEE chapter. Below is a gallery of
+photos from the capstone showcase.
+
+![capstone1](../assets/img/teachee/capstone1.jpg)
+
+![capstone2](../assets/img/teachee/capstone2.jpg)
+
+![capstone3](../assets/img/teachee/capstone3.jpg)
+
+![capstone4](../assets/img/teachee/capstone4.jpg)
+
+![capstone5](../assets/img/teachee/capstone5.jpg)
+
+![capstone6](../assets/img/teachee/capstone6.jpg)
 
 # Conclusion
-- Great way to end time in Computer Engineering and get exposure to FPGAs which
-  I had not experience outside of basic coursework
+Overall, TeachEE is a culmination of all my favorite subjects in Electrical and
+Computer Engineering. Moreover, it was a fantastic way to end my time at Queen's
+Computer Engineering. I was thrilled that the project was well-received by the
+department and that we were able to integrate both hardware and software into a
+single capstone.
