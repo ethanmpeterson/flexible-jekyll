@@ -113,7 +113,7 @@ The error should be corrected in future revisions of the design.
 ## Project Viewer
 Embedded below is the Altium project view of the SPCB project. The embedded viewer
 contains all the schematics that constitute the multi-sheet design as well as
-the PCB layout, BOM and 3D renders. The complete Altium CAD files can be found 
+the PCB layout, BOM and 3D renders. The complete Altium CAD files can be found
 [here](https://github.com/qfsae/pcb/tree/master/Steering).
 
 <iframe src="https://personal-viewer.365.altium.com/client/index.html?feature=embed&source=6934B02C-5ED8-45D2-84E8-5A2D8FEC4D79&activeView=PCB" width="1280" height="720" style="overflow:hidden;border:none;width:100%;height:720px;" scrolling="no" allowfullscreen="true" onload="window.top.scrollTo(0,0);"></iframe>
@@ -195,7 +195,7 @@ Altium. Special thanks to [Joe Wigle](https://www.linkedin.com/in/joe-wigle/)
 for his support in the construction of the vehicle harness and the schematic
 design. The schematic for the harness is given below:
 
-<div class="altium-ecad-viewer" data-project-token="Rm7wy9AR1kK43EXYUvGiMmi0" data-enabled-views="sch,bom" data-active-view="sch" style="border-radius: 0px 0px 4px 4px; height: 500px; border-style: solid; border-width: 1px; border-color: rgb(241, 241, 241); overflow: hidden; max-width: 1280px; max-height: 700px; box-sizing: border-box;"></div><script src="https://viewer.altium.com/client/static/js/embed.js"></script>
+<iframe src="https://personal-viewer.365.altium.com/client/index.html?feature=embed&source=9520EAAA-E5B3-4BC5-89F6-A4F6963666FC&activeView=SCH" width="1280" height="720" style="overflow:hidden;border:none;width:100%;height:720px;" scrolling="no" allowfullscreen="true" onload="window.top.scrollTo(0,0);"></iframe>
 
 # Photo and Video Gallery
 Below is a collection of photos and videos from the 2023 formula season which include the SPCB.
