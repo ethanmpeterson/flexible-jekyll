@@ -9,45 +9,57 @@ tags: [FPGA, SystemVerilog, SPI, UART, MDIO, MII, Ethernet]
 ---
 
 # Introduction
+After completing the [TeachEE](../teachee) project, I began to further explore
+FPGAs in my spare time after work. The result was the
+[`peripherals`](https://github.com/ethanmpeterson/peripherals) library. This
+library implements a variety of communications peripherals typically found in
+microcontrollers on an FPGA. The library is implemented in SystemVerilog and
+provides a standardized AXI interfaces for using these protocols on an FPGA.
 
+At the time of writing, I have implemented the following:
+- [A SPI Master](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/spi/spi_master.sv)
+- [An MDIO Master](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/ethernet/mdio/mdio_master.sv)
+- [A UART Peripheral](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/uart/uart.sv)
+- [UDP Transmitter](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/udp/udp_tx_example.sv)
+- [UDP Receiver](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/udp/udp_rx_example.sv)
+- [UDP Loopback Module](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/udp/udp_echo_example.sv)
 
-- After doing TeachEE, wanted to do more FPGA design work.
-- Built out an RTL project template based off the Github actions and VUNIT
-  infratrsucture I set up for TeachEE. Which was in turn inspired to Alex's
-  gitlab template
-- Specifically, was curious about getting FPGA talking over ethernet and bringing up some basic peripherals
-  - SPI
-  - MDIO
-  - UART
-- Wanted to extend knowledge of AXI and start using AXI Lite instead of just AXI stream like in TeachEE
-- This library might be a handy reference to those getting started with FPGAs
-  and designing similar state machines.
-- However, I would not recommend for production use. There are better reference
-  designs and IPs online that are properly validated. I brought these for
-  learning purposes only and will likely modify them when they are needed in
-  another project.
+My goals behind creating this library were to:
+- Improve my FPGA development skillset.
+- Design custom state machines to implement many of the peripherals we take for
+  granted on a microcontroller.
+- Provide a reference for my own future projects to quickly integrate these
+  protocols in an FPGA development environment.
+- Utilize Ethernet and begin taking advantage of higher-speed communication
+  protocols (i.e UDP).
 
-
-- The hardware is an ARTY A7 FPGA devkit. I chose this one because it is quite
-  popular online and has plenty of documentation.
-  - And critically, it contains a 10/100 ethernet PHY.
+This library was made strictly to learn how to implement these protocols at the
+hardware level. While I have validated all the modules in simulation and
+on-bench, they are likely not as thorough or capable as some of the other
+mainstream open source options available. They do serve as a great introduction
+to these protocols and systems nonetheless.
 
 # The Peripherals Repository
-- `peripherals` is a monorepo containing various peripherals I brought up on the
-  Arty A7 with corresponding VUNIT validation tests and examples.
-- The repo also contains a full Xilinx Vivado project and pin assignments /
-  timing constraints specific to the A7 board.
-- If you also have an A7, it should be plug and play.
-- Reference the templates from my github and Alex's
+The [`peripherals`](https://github.com/ethanmpeterson/peripherals) repository
+contains the source modules for each peripherals in addition to VUnit
+testbenches, bus functional models (BFMs), and usage examples.
+
+All the modules are regression tested by VUnit testbench. Each testbench is run
+on every commit using this [GitHub Actions
+job](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/.github/workflows/rtl.yml)
+
+This GitHub actions infrastructure is taken from my project template
+[here](https://github.com/ethanmpeterson/rtl-project), which was in-turn
+influenced by the [GitLab template from Alex
+Lao](https://gitlab.com/lao.alex.512/hdl_project_template).
 
 # Modules
-The peripherals library at the time of writing has SPI, UART, MDIO, and ethernet
-abstractions available. These modules are written to employ AXI streams or AXI
-Lite. As a result, they all share a common interface that is commonly used in
-FPGA datapaths. To learn more about AXI, I recommend the following resources:
-- Link 1 (Stacy's video on AXI lite)
-- Link 2 ("Dedicated Xilinx Page on AXI lite")
-- Link 3 ("Alex's readme from verilog axis")
+The following subsections provide a brief overview of each peripheral available
+in the library. All the modules use an AXI stream or AXI Lite interface. Below
+are some recommended resources for AXI.
+- [AXI Introduction Part 1: How AXI works and AXI-Lite transaction
+  example](https://www.youtube.com/watch?v=p5RIVEuxUds)
+- [AXI Stream Explained](https://www.youtube.com/watch?v=GyYmSZZor1s)
 
 ## UART
 TODO
