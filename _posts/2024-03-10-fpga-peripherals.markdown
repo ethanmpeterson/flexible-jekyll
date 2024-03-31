@@ -150,10 +150,9 @@ transitions and when the MISO line is sampled.
 For the MOSI line, it is important to update its state at the correct time
 relative to the SCK clock signal so that setup and hold times are respected.
 Similarly, the MISO line must be sampled at the correct time. Another benefit is
-that FPGA pins can have some jitter when they change states, if the module
-operated directly on the low-speed SPI SCK clock, this jitter could lead to data
-integrity issues. The drawback of the cycle counting approach is the increased
-LUT usage in the FPGA.
+mitigating FPGA I/O jitter. If the module operated directly on the low-speed SPI
+SCK clock, this jitter could lead to data integrity issues. The drawback of the
+cycle counting approach is the increased LUT usage in the FPGA.
 
 The last parameters in the SPI master module are `CPOL` and `CPHA` which define
 the SPI mode and clock polarity.
@@ -296,11 +295,11 @@ does update the MDIO pin on the falling edge of MDC to ensure timing is
 respected.
 
 ### Testing and Validation
-In order test the MDIO master module entirely in simulation, a Bus Functional
+In order to test the MDIO master module entirely in simulation, a Bus Functional
 Model (BFM) was built. The
 [BFM](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/src/ethernet/mdio/mdio_slave_bfm.sv)
 served as a mock ethernet PHY. This allowed for the development and verification
-of the module's output timing diagrams to be done entirely in ModelSim. The
+of the module's output timing diagrams to be done entirely in ModelSim. This
 greatly increased iteration speed as simulation compile times are significantly
 faster than deploying to hardware. Moreover, [the
 testbench](https://github.com/ethanmpeterson/peripherals/blob/449dad196a008e544701788d95b37d0976b4c1e2/rtl/testbenches/mdio_master_tb.sv)
